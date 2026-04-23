@@ -1872,8 +1872,7 @@ const ProfileActions = {
 };
 
 
-// ==============================//
-// ===== EXPOSE GLOBALS FOR INLINE EVENT HANDLERS =====
+// ===== EXPOSE TO GLOBAL SCOPE FOR INLINE EVENT HANDLERS =====
 window.Auth = Auth;
 window.UI = UI;
 window.App = App;
@@ -1890,8 +1889,8 @@ window.UserActions = UserActions;
 window.SettingsActions = SettingsActions;
 window.ProfileActions = ProfileActions;
 window.Pages = Pages;
-window.H = H;  // optional, but may be used by some inline calls
-// ==============================//
+window.H = H;
+window.FirebaseSetup = FirebaseSetup;   // if you also need it globally
 
 // ===== KEYBOARD SHORTCUTS =====
 document.addEventListener('keydown', e => {
