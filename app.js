@@ -28,7 +28,8 @@ const FIREBASE_CONFIG = {
   projectId: "projexwise-erp",
   storageBucket: "projexwise-erp.firebasestorage.app",
   messagingSenderId: "933242430125",
-  appId: "1:933242430125:web:de1672e9290dc1026f9c24"
+  appId: "1:933242430125:web:de1672e9290dc1026f9c24",
+  measurementId: "G-5RRN41RDSD"
 };
 
 // ===== INITIALIZE FIREBASE =====
@@ -1869,6 +1870,28 @@ const ProfileActions = {
     }
   }
 };
+
+
+// ==============================//
+// ===== EXPOSE GLOBALS FOR INLINE EVENT HANDLERS =====
+window.Auth = Auth;
+window.UI = UI;
+window.App = App;
+window.Search = Search;
+window.Notifications = Notifications;
+window.IncomeActions = IncomeActions;
+window.ExpenseActions = ExpenseActions;
+window.PartnerActions = PartnerActions;
+window.ProjectActions = ProjectActions;
+window.CustodyActions = CustodyActions;
+window.CashActions = CashActions;
+window.ReportActions = ReportActions;
+window.UserActions = UserActions;
+window.SettingsActions = SettingsActions;
+window.ProfileActions = ProfileActions;
+window.Pages = Pages;
+window.H = H;  // optional, but may be used by some inline calls
+// ==============================//
 
 // ===== KEYBOARD SHORTCUTS =====
 document.addEventListener('keydown', e => {
