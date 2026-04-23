@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ProjeXWise ERP</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◈</text></svg>">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Syne:wght@700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Firebase v10 modular via CDN -->
+  <script type="module" src="app.js"></script>
+</head>
+<body class="light">
+
+<!-- ========== LOADING SCREEN ========== -->
+<div id="loadingScreen" class="loading-screen">
+  <div class="loading-logo">
+    <div class="loading-hex">◈</div>
+    <div class="loading-name">ProjeX<span>Wise</span></div>
+  </div>
+  <div class="loading-bar"><div class="loading-progress"></div></div>
+  <div class="loading-text">جاري التحميل...</div>
+</div>
+
+<!-- ========== LOGIN SCREEN ========== -->
+<div id="loginScreen" class="login-screen hidden">
+  <div class="login-visual">
+    <div class="login-visual-content">
+      <div class="lv-logo">◈</div>
+      <h1 class="lv-title">ProjeX<em>Wise</em></h1>
+      <p class="lv-sub">نظام إدارة المشاريع والمالية المتكامل</p>
+      <div class="lv-features">
+        <div class="lv-feat">✦ إدارة المشاريع والتكاليف</div>
+        <div class="lv-feat">✦ حسابات الشركاء والأرباح</div>
+        <div class="lv-feat">✦ نظام العهد والسلف</div>
+        <div class="lv-feat">✦ تقارير مالية شاملة</div>
+      </div>
+    </div>
+    <div class="lv-bg-shapes">
+      <div class="shape s1"></div>
+      <div class="shape s2"></div>
+      <div class="shape s3"></div>
+    </div>
+  </div>
+  <div class="login-form-side">
+    <div class="login-card">
+      <div class="login-card-logo">
+        <span class="lc-hex">◈</span>
+        <span class="lc-name">ProjeXWise</span>
+      </div>
+      <h2 class="login-card-title">تسجيل الدخول</h2>
+      <p class="login-card-sub">أدخل بياناتك للدخول إلى النظام</p>
+      <div class="form-group">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="loginEmail" class="form-control" placeholder="email@company.com" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label>كلمة المرور</label>
+        <div class="input-with-icon">
+          <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" autocomplete="current-password">
+          <button class="input-toggle" onclick="UI.togglePassword('loginPassword', this)">👁</button>
+        </div>
+      </div>
+      <div id="loginError" class="alert alert-error hidden"></div>
+      <button class="btn btn-primary btn-block" id="loginBtn" onclick="Auth.login()">
+        <span>دخول</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MAIN APP ========== -->
+<div id="appShell" class="app-shell hidden">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-logo">◈</div>
+      <div class="brand-text">
+        <span class="brand-name">ProjeX<em>Wise</em></span>
+        <span class="brand-ver">ERP v2.0</span>
+      </div>
+      <button class="sidebar-pin" id="sidebarPin" onclick="UI.toggleSidebar()" title="تثبيت القائمة">⇔</button>
+    </div>
+
+    <div class="sidebar-user-card">
+      <div class="suc-avatar" id="sucAvatar">U</div>
+      <div class="suc-info">
+        <div class="suc-name" id="sucName">المستخدم</div>
+        <div class="suc-role" id="sucRole">موظف</div>
+      </div>
+      <button class="suc-settings" onclick="App.navigate('profile')" title="الملف الشخصي">⚙</button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-group">
+        <div class="nav-group-label">الرئيسية</div>
+        <a class="nav-link" data-page="dashboard" onclick="App.navigate('dashboard')">
+          <span class="nl-icon">◈</span><span class="nl-text">لوحة التحكم</span>
+        </a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">المعاملات</div>
+        <a class="nav-link perm-income_view" data-page="income" onclick="App.navigate('income')">
+          <span class="nl-icon">↑</span><span class="nl-text">الإيرادات</span>
+          <span class="nl-badge pending-income-badge hidden">!</span>
+        </a>
+        <a class="nav-link perm-expenses_view" data-page="expenses" onclick="App.navigate('expenses')">
+          <span class="nl-icon">↓</span><span class="nl-text">المصروفات</span>
+          <span class="nl-badge pending-expense-badge hidden">!</span>
+        </a>
+        <a class="nav-link perm-custody_create" data-page="custody" onclick="App.navigate('custody')">
+          <span class="nl-icon">◷</span><span class="nl-text">العهد والسلف</span>
+        </a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">الإدارة</div>
+        <a class="nav-link" data-page="projects" onclick="App.navigate('projects')">
+          <span class="nl-icon">◧</span><span class="nl-text">المشاريع</span>
+        </a>
+        <a class="nav-link perm-partners_view" data-page="partners" onclick="App.navigate('partners')">
+          <span class="nl-icon">◎</span><span class="nl-text">الشركاء</span>
+        </a>
+        <a class="nav-link" data-page="cashbank" onclick="App.navigate('cashbank')">
+          <span class="nl-icon">◉</span><span class="nl-text">الخزينة والبنك</span>
+        </a>
+      </div>
+
+      <div class="nav-group">
+        <div class="nav-group-label">التحليل</div>
+        <a class="nav-link perm-reports_view" data-page="reports" onclick="App.navigate('reports')">
+          <span class="nl-icon">≡</span><span class="nl-text">التقارير</span>
+        </a>
+        <a class="nav-link perm-reports_view" data-page="audit" onclick="App.navigate('audit')">
+          <span class="nl-icon">◑</span><span class="nl-text">سجل العمليات</span>
+        </a>
+      </div>
+
+      <div class="nav-group admin-only">
+        <div class="nav-group-label">الإدارة</div>
+        <a class="nav-link perm-admin_users" data-page="users" onclick="App.navigate('users')">
+          <span class="nl-icon">◐</span><span class="nl-text">المستخدمون</span>
+        </a>
+        <a class="nav-link perm-admin_settings" data-page="settings" onclick="App.navigate('settings')">
+          <span class="nl-icon">⊛</span><span class="nl-text">الإعدادات</span>
+        </a>
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="sf-theme" onclick="UI.toggleTheme()" title="الوضع المظلم">◑</button>
+      <button class="sf-logout" onclick="Auth.logout()">
+        <span class="nl-icon">⏏</span><span class="nl-text">خروج</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-right">
+      <button class="topbar-menu" onclick="UI.toggleMobileSidebar()">☰</button>
+      <div id="topbarBreadcrumb" class="topbar-breadcrumb">لوحة التحكم</div>
+    </div>
+    <div class="topbar-left">
+      <div class="topbar-search">
+        <input type="text" placeholder="بحث..." id="globalSearch" oninput="Search.global(this.value)">
+        <span class="ts-icon">⌕</span>
+        <div id="searchResults" class="search-results hidden"></div>
+      </div>
+      <div class="topbar-notif" onclick="UI.toggleNotifications()" id="notifBtn">
+        <span class="notif-icon">🔔</span>
+        <span class="notif-count hidden" id="notifCount">0</span>
+      </div>
+      <div id="notifPanel" class="notif-panel hidden">
+        <div class="np-header">الإشعارات</div>
+        <div id="notifList" class="np-list"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE CONTENT -->
+  <main class="main-area" id="mainArea">
+    <div id="pageContainer"></div>
+  </main>
+</div>
+
+<!-- ========== MODAL ========== -->
+<div id="modalBackdrop" class="modal-backdrop hidden" onclick="UI.closeModal(event)">
+  <div class="modal-box" id="modalBox" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3 id="modalTitle">العنوان</h3>
+      <button class="modal-x" onclick="UI.closeModal()">✕</button>
+    </div>
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+</div>
+
+<!-- ========== CONFIRM DIALOG ========== -->
+<div id="confirmDialog" class="confirm-dialog hidden">
+  <div class="cd-box">
+    <div class="cd-icon">⚠</div>
+    <div class="cd-title" id="cdTitle">تأكيد الإجراء</div>
+    <div class="cd-msg" id="cdMsg">هل أنت متأكد؟</div>
+    <div class="cd-actions">
+      <button class="btn btn-ghost" onclick="UI.confirmCancel()">إلغاء</button>
+      <button class="btn btn-danger" id="cdConfirmBtn">تأكيد</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toastStack" class="toast-stack"></div>
+
+</body>
+</html>
